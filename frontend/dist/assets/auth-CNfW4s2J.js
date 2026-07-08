@@ -1,0 +1,1 @@
+import{r as t}from"./request-7Z-QZHun.js";function u(r){return t({url:"/auth/login",method:"post",data:r})}function o(r){return t({url:"/auth/register",method:"post",data:r})}function n(){return t({url:"/auth/me",method:"get"})}export{n as g,u as l,o as r};
