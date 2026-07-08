@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 在线考试系统
 
 基于 Spring Boot 3.1.8 + Vue 3 + Element Plus 构建的在线考试系统。
@@ -331,3 +332,7 @@ kaoshisystem/
 ## License
 
 MIT License
+=======
+# Exam-System
+专业实训与技能达标实验项目
+>>>>>>> 8bc090fc9df84d003de569463eaa1898f80e604f
