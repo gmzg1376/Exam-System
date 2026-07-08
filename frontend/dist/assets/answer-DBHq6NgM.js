@@ -1,0 +1,1 @@
+import{r as t}from"./request-D8eRSRbh.js";function s(e){return t({url:"/answer/submit",method:"post",data:e})}function n(){return t({url:"/answer/history",method:"get"})}function u(e){return t({url:`/answer/exam/${e}`,method:"get"})}function o(e){return t({url:`/answer/sheet/${e}`,method:"get"})}export{u as a,o as b,n as g,s};

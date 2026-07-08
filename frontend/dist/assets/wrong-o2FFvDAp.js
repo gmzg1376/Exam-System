@@ -1,0 +1,1 @@
+import{r as e}from"./request-D8eRSRbh.js";function t(){return e({url:"/wrong",method:"get"})}function n(r){return e({url:`/wrong/${r}`,method:"delete"})}function u(){return e({url:"/wrong/clear",method:"delete"})}export{u as c,t as g,n as r};
