@@ -3,7 +3,11 @@
   <div class="exam-management">
     <div class="management-header">
       <h3>考试管理</h3>
+<<<<<<< HEAD
       <el-button type="primary" @click="showCreateDialog = true">创建考试</el-button>
+=======
+      <el-button type="primary" @click="openCreateDialog">创建考试</el-button>
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
     </div>
     
     <el-table :data="exams" border>
@@ -42,7 +46,11 @@
       </el-table-column>
     </el-table>
     
+<<<<<<< HEAD
     <el-dialog v-model="showCreateDialog" title="创建考试" width="600px">
+=======
+    <el-dialog v-model="showCreateDialog" :title="editingId ? '编辑考试' : '创建考试'" width="600px" @closed="resetForm">
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
       <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
         <el-form-item label="考试名称" prop="title">
           <el-input v-model="form.title" />
@@ -68,7 +76,11 @@
       </el-form>
       <template #footer>
         <el-button @click="showCreateDialog = false">取消</el-button>
+<<<<<<< HEAD
         <el-button type="primary" @click="handleCreate">确定</el-button>
+=======
+        <el-button type="primary" @click="handleSubmit">确定</el-button>
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
       </template>
     </el-dialog>
   </div>
@@ -76,10 +88,18 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
+<<<<<<< HEAD
+=======
+import { ElMessage, ElMessageBox } from 'element-plus'
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
 import { getExams, createExam, updateExam, deleteExam as deleteExamApi, startExam as startExamApi, endExam as endExamApi } from '../../api/exam'
 
 const exams = ref([])
 const showCreateDialog = ref(false)
+<<<<<<< HEAD
+=======
+const editingId = ref(null)
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
 const formRef = ref(null)
 
 const form = reactive({
@@ -114,6 +134,7 @@ function getStatusText(status) {
   return texts[status] || '未知'
 }
 
+<<<<<<< HEAD
 async function handleCreate() {
   if (!await formRef.value.validate()) return
   
@@ -132,6 +153,8 @@ async function handleCreate() {
   }
 }
 
+=======
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
 function formatDateTime(date) {
   if (!date) return ''
   const d = new Date(date)
@@ -144,6 +167,7 @@ function formatDateTime(date) {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 }
 
+<<<<<<< HEAD
 function editExam(row) {
   Object.assign(form, row)
   if (row.startTime) {
@@ -152,28 +176,129 @@ function editExam(row) {
   if (row.endTime) {
     form.endTime = new Date(row.endTime)
   }
+=======
+function buildFormData() {
+  return {
+    title: form.title,
+    duration: Number(form.duration),
+    startTime: form.startTime ? formatDateTime(form.startTime) : '',
+    endTime: form.endTime ? formatDateTime(form.endTime) : '',
+    randomQuestion: form.randomQuestion,
+    randomOption: form.randomOption,
+    description: form.description
+  }
+}
+
+function resetForm() {
+  editingId.value = null
+  form.title = ''
+  form.duration = 60
+  form.startTime = ''
+  form.endTime = ''
+  form.randomQuestion = false
+  form.randomOption = false
+  form.description = ''
+  formRef.value?.resetFields()
+}
+
+function openCreateDialog() {
+  resetForm()
+  showCreateDialog.value = true
+}
+
+async function handleSubmit() {
+  if (!await formRef.value.validate()) return
+
+  try {
+    const formData = buildFormData()
+    const res = editingId.value
+      ? await updateExam(editingId.value, formData)
+      : await createExam(formData)
+    if (res.code === 200) {
+      ElMessage.success(editingId.value ? '更新成功' : '创建成功')
+      showCreateDialog.value = false
+      loadExams()
+    } else {
+      ElMessage.error(res.message || '操作失败')
+    }
+  } catch (e) {
+    ElMessage.error(e?.message || '操作失败，请稍后重试')
+  }
+}
+
+function editExam(row) {
+  editingId.value = row.id
+  form.title = row.title
+  form.duration = row.duration
+  form.startTime = row.startTime ? new Date(row.startTime) : ''
+  form.endTime = row.endTime ? new Date(row.endTime) : ''
+  form.randomQuestion = !!row.randomQuestion
+  form.randomOption = !!row.randomOption
+  form.description = row.description || ''
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
   showCreateDialog.value = true
 }
 
 async function handleStartExam(row) {
+<<<<<<< HEAD
   const res = await startExamApi(row.id)
   if (res.code === 200) {
     loadExams()
+=======
+  try {
+    const res = await startExamApi(row.id)
+    if (res.code === 200) {
+      ElMessage.success('考试已开始')
+      loadExams()
+    } else {
+      ElMessage.error(res.message || '操作失败')
+    }
+  } catch (e) {
+    ElMessage.error(e?.message || '操作失败，请稍后重试')
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
   }
 }
 
 async function handleEndExam(row) {
+<<<<<<< HEAD
   const res = await endExamApi(row.id)
   if (res.code === 200) {
     loadExams()
+=======
+  try {
+    const res = await endExamApi(row.id)
+    if (res.code === 200) {
+      ElMessage.success('考试已结束')
+      loadExams()
+    } else {
+      ElMessage.error(res.message || '操作失败')
+    }
+  } catch (e) {
+    ElMessage.error(e?.message || '操作失败，请稍后重试')
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
   }
 }
 
 async function handleDeleteExam(row) {
+<<<<<<< HEAD
   if (confirm(`确定删除考试「${row.title}」吗？`)) {
     const res = await deleteExamApi(row.id)
     if (res.code === 200) {
       loadExams()
+=======
+  try {
+    await ElMessageBox.confirm(`确定删除考试「${row.title}」吗？`, '提示', { type: 'warning' })
+    const res = await deleteExamApi(row.id)
+    if (res.code === 200) {
+      ElMessage.success('删除成功')
+      loadExams()
+    } else {
+      ElMessage.error(res.message || '删除失败')
+    }
+  } catch (e) {
+    if (e !== 'cancel') {
+      ElMessage.error(e?.message || '删除失败，请稍后重试')
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
     }
   }
 }

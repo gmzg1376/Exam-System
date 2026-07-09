@@ -30,6 +30,13 @@ request.interceptors.response.use(
     return res
   },
   error => {
+<<<<<<< HEAD
+=======
+    const res = error.response?.data
+    if (res && typeof res === 'object' && res.message) {
+      return Promise.reject(res)
+    }
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
     return Promise.reject(error)
   }
 )

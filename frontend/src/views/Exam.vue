@@ -123,6 +123,10 @@
 
 <script setup>import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+<<<<<<< HEAD
+=======
+import { ElMessage } from 'element-plus';
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
 import { useExamStore } from '../store/exam';
 import { getExamById, getExamQuestions } from '../api/exam';
 import { submitAnswer, getAnswerByExam } from '../api/answer';
@@ -318,8 +322,22 @@ onMounted(async () => {
  ]);
  if (examRes.code === 200) {
  examStore.setCurrentExam(examRes.data);
+<<<<<<< HEAD
  }
  if (questionRes.code === 200) {
+=======
+ } else {
+ ElMessage.error(examRes.message || '考试不存在');
+ router.push('/');
+ return;
+ }
+ if (questionRes.code === 200) {
+ if (!questionRes.data || questionRes.data.length === 0) {
+ ElMessage.error('该考试暂无题目，无法作答');
+ router.push('/');
+ return;
+ }
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
  examStore.setQuestions(questionRes.data);
  }
  timer = setInterval(() => {

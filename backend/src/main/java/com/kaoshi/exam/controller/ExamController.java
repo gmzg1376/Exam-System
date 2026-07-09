@@ -38,13 +38,28 @@ public class ExamController {
 
     @GetMapping("/{id}")
     public Result<Exam> getExamById(@PathVariable Long id) {
+<<<<<<< HEAD
         return Result.success(examService.findById(id));
+=======
+        Exam exam = examService.findById(id);
+        if (exam == null) {
+            return Result.error(404, "考试不存在");
+        }
+        return Result.success(exam);
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
     }
 
     @GetMapping("/{id}/questions")
     public Result<List<Question>> getExamQuestions(@PathVariable Long id) {
         Exam exam = examService.findById(id);
+<<<<<<< HEAD
         List<Question> questions = questionService.findByExamIdWithRandom(id, exam.getRandomQuestion());
+=======
+        if (exam == null) {
+            return Result.error(404, "考试不存在");
+        }
+        List<Question> questions = questionService.findByExamIdWithRandom(id, Boolean.TRUE.equals(exam.getRandomQuestion()));
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
         return Result.success(questions);
     }
 

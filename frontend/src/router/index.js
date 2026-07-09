@@ -92,7 +92,11 @@ router.beforeEach((to, from, next) => {
     return
   }
 
+<<<<<<< HEAD
   if (to.meta.studentOnly && (!user || user.role !== 'STUDENT')) {
+=======
+  if (to.meta.studentOnly && (!user || (user.role !== 'STUDENT' && user.role !== 'ADMIN'))) {
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
     next('/')
     return
   }

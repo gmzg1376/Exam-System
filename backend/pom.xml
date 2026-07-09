@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -12,11 +13,23 @@
         <relativePath/>
     </parent>
     
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.8</version>
+        <relativePath/>
+    </parent>
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
     <groupId>com.kaoshi</groupId>
     <artifactId>exam-system</artifactId>
     <version>1.0.0</version>
     <name>exam-system</name>
     <description>在线考试系统</description>
+<<<<<<< HEAD
     
     <properties>
         <java.version>17</java.version>  <!-- 确保是 17 -->
@@ -25,16 +38,28 @@
         <hutool.version>5.8.25</hutool.version>
     </properties>
     
+=======
+    <properties>
+        <java.version>17</java.version>
+        <mybatis-plus.version>3.5.6</mybatis-plus.version>
+        <jjwt.version>0.12.3</jjwt.version>
+        <hutool.version>5.8.25</hutool.version>
+    </properties>
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+<<<<<<< HEAD
         
+=======
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+<<<<<<< HEAD
         
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -53,12 +78,27 @@
             <scope>runtime</scope>
         </dependency>
         
+=======
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+<<<<<<< HEAD
         
+=======
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -76,26 +116,38 @@
             <version>${jjwt.version}</version>
             <scope>runtime</scope>
         </dependency>
+<<<<<<< HEAD
         
+=======
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>${hutool.version}</version>
         </dependency>
+<<<<<<< HEAD
         
+=======
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+<<<<<<< HEAD
         
+=======
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
+<<<<<<< HEAD
     
+=======
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
     <build>
         <plugins>
             <plugin>
@@ -112,4 +164,8 @@
             </plugin>
         </plugins>
     </build>
+<<<<<<< HEAD
 </project>
+=======
+</project>
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1

@@ -2,7 +2,15 @@ package com.kaoshi.exam.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.kaoshi.exam.dto.ExamDTO;
+<<<<<<< HEAD
 import com.kaoshi.exam.entity.Exam;
+=======
+import com.kaoshi.exam.entity.AnswerSheet;
+import com.kaoshi.exam.entity.Exam;
+import com.kaoshi.exam.entity.Question;
+import com.kaoshi.exam.exception.BusinessException;
+import com.kaoshi.exam.mapper.AnswerSheetMapper;
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
 import com.kaoshi.exam.mapper.ExamMapper;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +21,21 @@ import java.util.List;
 public class ExamService {
 
     private final ExamMapper examMapper;
+<<<<<<< HEAD
 
     public ExamService(ExamMapper examMapper) {
         this.examMapper = examMapper;
+=======
+    private final AnswerSheetMapper answerSheetMapper;
+    private final QuestionService questionService;
+
+    public ExamService(ExamMapper examMapper,
+                       AnswerSheetMapper answerSheetMapper,
+                       QuestionService questionService) {
+        this.examMapper = examMapper;
+        this.answerSheetMapper = answerSheetMapper;
+        this.questionService = questionService;
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
     }
 
     public List<Exam> findAll() {
@@ -48,6 +68,12 @@ public class ExamService {
 
     public Exam update(Long id, ExamDTO dto) {
         Exam exam = findById(id);
+<<<<<<< HEAD
+=======
+        if (exam == null) {
+            throw new BusinessException(404, "考试不存在");
+        }
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
         exam.setTitle(dto.getTitle());
         exam.setDuration(dto.getDuration());
         exam.setStartTime(dto.getStartTime());
@@ -61,6 +87,22 @@ public class ExamService {
     }
 
     public void delete(Long id) {
+<<<<<<< HEAD
+=======
+        Exam exam = findById(id);
+        if (exam == null) {
+            throw new BusinessException(404, "考试不存在");
+        }
+        Long sheetCount = answerSheetMapper.selectCount(
+                new QueryWrapper<AnswerSheet>().eq("exam_id", id));
+        if (sheetCount > 0) {
+            throw new BusinessException("该考试已有答题记录，无法删除");
+        }
+        List<Question> questions = questionService.findByExamId(id);
+        for (Question question : questions) {
+            questionService.delete(question.getId());
+        }
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
         examMapper.deleteById(id);
     }
 

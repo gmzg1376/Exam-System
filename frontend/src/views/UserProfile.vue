@@ -46,10 +46,29 @@
         <el-button type="primary" @click="showChangePassword = true" icon="Lock">
           修改密码
         </el-button>
+<<<<<<< HEAD
+=======
+        <el-button type="warning" @click="openFaceEnroll" icon="Camera">
+          {{ faceEnrolled ? '重新录入人脸' : '录入人脸' }}
+        </el-button>
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
         <el-button type="success" @click="saveProfile" icon="Check">
           保存修改
         </el-button>
       </div>
+<<<<<<< HEAD
+=======
+
+      <el-alert
+        v-if="faceEnrolled"
+        type="success"
+        title="人脸信息已录入"
+        description="进入考试时可进行人脸比对核验"
+        show-icon
+        :closable="false"
+        class="face-status-alert"
+      />
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
       
       <el-divider />
       
@@ -110,6 +129,23 @@
       </div>
     </el-dialog>
     
+<<<<<<< HEAD
+=======
+    <el-dialog v-model="showFaceEnroll" title="人脸录入" width="420px" @closed="closeFaceEnroll">
+      <p class="face-enroll-tip">请正对摄像头，确保光线充足、面部清晰可见</p>
+      <div class="face-enroll-camera">
+        <video ref="faceVideoRef" autoplay playsinline muted></video>
+        <div v-if="!faceCameraReady" class="camera-placeholder">正在启动摄像头...</div>
+      </div>
+      <template #footer>
+        <el-button @click="showFaceEnroll = false">取消</el-button>
+        <el-button type="primary" @click="handleEnrollFace" :loading="faceEnrolling" :disabled="!faceCameraReady">
+          确认录入
+        </el-button>
+      </template>
+    </el-dialog>
+
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
     <el-dialog v-model="showChangePassword" title="修改密码" width="400px">
       <el-form :model="passwordForm" label-width="100px">
         <el-form-item label="原密码" prop="oldPassword">
@@ -131,13 +167,27 @@
 </template>
 
 <script setup>
+<<<<<<< HEAD
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+=======
+import { ref, onMounted, nextTick } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
 import { getCurrentUser } from '../api/auth'
 import { getAnswerHistory } from '../api/answer'
 import { getExams } from '../api/exam'
 import { updateUserInfo, changePassword as apiChangePassword } from '../api/user'
 import { Camera, House, Lock, Check } from '@element-plus/icons-vue'
+<<<<<<< HEAD
+=======
+import {
+  getStoredFaceDescriptor,
+  enrollFace,
+  stopCameraStream
+} from '../utils/faceVerify'
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
 
 const router = useRouter()
 const userInfo = ref({})
@@ -148,6 +198,14 @@ const examSheetMap = ref(new Map())
 
 const showAvatarUpload = ref(false)
 const showChangePassword = ref(false)
+<<<<<<< HEAD
+=======
+const showFaceEnroll = ref(false)
+const faceEnrolled = ref(false)
+const faceCameraReady = ref(false)
+const faceEnrolling = ref(false)
+const faceVideoRef = ref(null)
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
 const editingEmail = ref(false)
 const editingPhone = ref(false)
 
@@ -186,6 +244,55 @@ async function loadUserInfo() {
       email: res.data.email || '',
       phone: res.data.phone || ''
     }
+<<<<<<< HEAD
+=======
+    faceEnrolled.value = !!getStoredFaceDescriptor(res.data.id)
+  }
+}
+
+async function openFaceEnroll() {
+  showFaceEnroll.value = true
+  faceCameraReady.value = false
+  await nextTick()
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }
+    })
+    if (faceVideoRef.value) {
+      faceVideoRef.value.srcObject = stream
+      faceVideoRef.value.onloadedmetadata = () => {
+        faceVideoRef.value?.play()
+        faceCameraReady.value = true
+      }
+    }
+  } catch {
+    ElMessage.error('无法访问摄像头，请检查浏览器权限')
+    showFaceEnroll.value = false
+  }
+}
+
+function closeFaceEnroll() {
+  stopCameraStream(faceVideoRef.value)
+  faceCameraReady.value = false
+}
+
+async function handleEnrollFace() {
+  if (!faceVideoRef.value || !userInfo.value.id) return
+  faceEnrolling.value = true
+  try {
+    const result = await enrollFace(faceVideoRef.value, userInfo.value.id)
+    if (result.success) {
+      faceEnrolled.value = true
+      ElMessage.success(result.message)
+      showFaceEnroll.value = false
+    } else {
+      ElMessage.error(result.message)
+    }
+  } catch {
+    ElMessage.error('人脸录入失败，请稍后重试')
+  } finally {
+    faceEnrolling.value = false
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
   }
 }
 
@@ -215,14 +322,28 @@ async function loadExamHistory() {
 }
 
 async function saveProfile() {
+<<<<<<< HEAD
   const res = await updateUserInfo(editForm.value)
   if (res.code === 200) {
     userInfo.value = { ...userInfo.value, ...editForm.value }
     elMessage.success('保存成功')
+=======
+  try {
+    const res = await updateUserInfo(editForm.value)
+    if (res.code === 200) {
+      userInfo.value = { ...userInfo.value, ...editForm.value }
+      ElMessage.success('保存成功')
+    } else {
+      ElMessage.error(res.message || '保存失败')
+    }
+  } catch (e) {
+    ElMessage.error(e?.message || '保存失败，请稍后重试')
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
   }
 }
 
 async function changePassword() {
+<<<<<<< HEAD
   if (passwordForm.value.newPassword !== passwordForm.value.confirmPassword) {
     elMessage.error('两次输入的密码不一致')
     return
@@ -237,6 +358,34 @@ async function changePassword() {
     passwordForm.value = { oldPassword: '', newPassword: '', confirmPassword: '' }
   } else {
     elMessage.error(res.message)
+=======
+  if (!passwordForm.value.oldPassword) {
+    ElMessage.error('请输入原密码')
+    return
+  }
+  if (!passwordForm.value.newPassword) {
+    ElMessage.error('请输入新密码')
+    return
+  }
+  if (passwordForm.value.newPassword !== passwordForm.value.confirmPassword) {
+    ElMessage.error('两次输入的密码不一致')
+    return
+  }
+  try {
+    const res = await apiChangePassword({
+      oldPassword: passwordForm.value.oldPassword,
+      newPassword: passwordForm.value.newPassword
+    })
+    if (res.code === 200) {
+      ElMessage.success('密码修改成功')
+      showChangePassword.value = false
+      passwordForm.value = { oldPassword: '', newPassword: '', confirmPassword: '' }
+    } else {
+      ElMessage.error(res.message || '密码修改失败')
+    }
+  } catch (e) {
+    ElMessage.error(e?.message || '密码修改失败，请稍后重试')
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
   }
 }
 
@@ -244,19 +393,34 @@ function handleAvatarSuccess(res) {
   if (res.code === 200) {
     userInfo.value.avatar = res.data
     showAvatarUpload.value = false
+<<<<<<< HEAD
     elMessage.success('头像上传成功')
+=======
+    ElMessage.success('头像上传成功')
+  } else {
+    ElMessage.error(res.message || '头像上传失败')
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
   }
 }
 
 function beforeAvatarUpload(file) {
   const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
   const isLt2M = file.size / 1024 / 1024 < 2
+<<<<<<< HEAD
   
   if (!isJPG) {
     elMessage.error('头像图片只能是 JPG 或 PNG 格式')
   }
   if (!isLt2M) {
     elMessage.error('头像图片大小不能超过 2MB')
+=======
+
+  if (!isJPG) {
+    ElMessage.error('头像图片只能是 JPG 或 PNG 格式')
+  }
+  if (!isLt2M) {
+    ElMessage.error('头像图片大小不能超过 2MB')
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
   }
   return isJPG && isLt2M
 }
@@ -360,6 +524,45 @@ onMounted(async () => {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+<<<<<<< HEAD
+=======
+  flex-wrap: wrap;
+}
+
+.face-status-alert {
+  margin-bottom: 20px;
+}
+
+.face-enroll-tip {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: #606266;
+}
+
+.face-enroll-camera {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.face-enroll-camera video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.face-enroll-camera .camera-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.7);
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
 }
 
 .exam-section {

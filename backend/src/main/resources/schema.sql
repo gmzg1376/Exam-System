@@ -80,4 +80,8 @@ CREATE TABLE IF NOT EXISTS wrong_question (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO user (username, password, role, create_time, update_time) VALUES 
+<<<<<<< HEAD
 ('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMye.IjzqAKL9xL5jvMFVdNJHvGCgTq/VEq', 'ADMIN', NOW(), NOW());
+=======
+('admin', '$2a$10$eHifBG8EkUrVmRVwQTuaHeXNxjTHErwRV9.uiN1tYshc43VFoqW/W', 'ADMIN', NOW(), NOW());
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1

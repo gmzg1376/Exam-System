@@ -2,8 +2,18 @@ package com.kaoshi.exam.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.kaoshi.exam.dto.QuestionDTO;
+<<<<<<< HEAD
 import com.kaoshi.exam.entity.Question;
 import com.kaoshi.exam.mapper.QuestionMapper;
+=======
+import com.kaoshi.exam.entity.AnswerDetail;
+import com.kaoshi.exam.entity.Question;
+import com.kaoshi.exam.entity.WrongQuestion;
+import com.kaoshi.exam.exception.BusinessException;
+import com.kaoshi.exam.mapper.AnswerDetailMapper;
+import com.kaoshi.exam.mapper.QuestionMapper;
+import com.kaoshi.exam.mapper.WrongQuestionMapper;
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,9 +24,21 @@ import java.util.List;
 public class QuestionService {
 
     private final QuestionMapper questionMapper;
+<<<<<<< HEAD
 
     public QuestionService(QuestionMapper questionMapper) {
         this.questionMapper = questionMapper;
+=======
+    private final AnswerDetailMapper answerDetailMapper;
+    private final WrongQuestionMapper wrongQuestionMapper;
+
+    public QuestionService(QuestionMapper questionMapper,
+                           AnswerDetailMapper answerDetailMapper,
+                           WrongQuestionMapper wrongQuestionMapper) {
+        this.questionMapper = questionMapper;
+        this.answerDetailMapper = answerDetailMapper;
+        this.wrongQuestionMapper = wrongQuestionMapper;
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
     }
 
     public List<Question> findByExamId(Long examId) {
@@ -66,6 +88,18 @@ public class QuestionService {
     }
 
     public void delete(Long id) {
+<<<<<<< HEAD
+=======
+        if (findById(id) == null) {
+            throw new BusinessException(404, "题目不存在");
+        }
+        Long answerCount = answerDetailMapper.selectCount(
+                new QueryWrapper<AnswerDetail>().eq("question_id", id));
+        if (answerCount > 0) {
+            throw new BusinessException("该题目已有答题记录，无法删除");
+        }
+        wrongQuestionMapper.delete(new QueryWrapper<WrongQuestion>().eq("question_id", id));
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
         questionMapper.deleteById(id);
     }
 

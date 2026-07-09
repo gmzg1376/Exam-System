@@ -6,7 +6,11 @@
       <el-select v-model="searchExamId" placeholder="选择考试">
         <el-option v-for="e in exams" :key="e.id" :label="e.title" :value="e.id" />
       </el-select>
+<<<<<<< HEAD
       <el-button type="primary" @click="showCreateDialog = true">添加题目</el-button>
+=======
+      <el-button type="primary" @click="openCreateDialog">添加题目</el-button>
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
     </div>
     
     <el-table :data="questions" border>
@@ -33,7 +37,11 @@
       </el-table-column>
     </el-table>
     
+<<<<<<< HEAD
     <el-dialog v-model="showCreateDialog" title="添加题目" width="700px">
+=======
+    <el-dialog v-model="showCreateDialog" :title="editingId ? '编辑题目' : '添加题目'" width="700px" @closed="resetForm">
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
       <el-form :model="form" :rules="rules" ref="formRef" label-width="80px">
         <el-form-item label="所属考试" prop="examId">
           <el-select v-model="form.examId">
@@ -73,7 +81,11 @@
       </el-form>
       <template #footer>
         <el-button @click="showCreateDialog = false">取消</el-button>
+<<<<<<< HEAD
         <el-button type="primary" @click="handleCreate">确定</el-button>
+=======
+        <el-button type="primary" @click="handleSubmit">确定</el-button>
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
       </template>
     </el-dialog>
   </div>
@@ -81,6 +93,10 @@
 
 <script setup>
 import { ref, reactive, onMounted, watch } from 'vue'
+<<<<<<< HEAD
+=======
+import { ElMessage, ElMessageBox } from 'element-plus'
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
 import { getQuestionsByExam, createQuestion, updateQuestion, deleteQuestion as deleteQuestionApi } from '../../api/question'
 import { getExams } from '../../api/exam'
 
@@ -88,13 +104,30 @@ const questions = ref([])
 const exams = ref([])
 const searchExamId = ref('')
 const showCreateDialog = ref(false)
+<<<<<<< HEAD
 const formRef = ref(null)
 
+=======
+const editingId = ref(null)
+const formRef = ref(null)
+
+const defaultOptions = () => ([
+  { label: 'A', value: '' },
+  { label: 'B', value: '' },
+  { label: 'C', value: '' },
+  { label: 'D', value: '' }
+])
+
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
 const form = reactive({
   examId: '',
   type: 1,
   content: '',
+<<<<<<< HEAD
   options: [{ label: 'A', value: '' }, { label: 'B', value: '' }, { label: 'C', value: '' }, { label: 'D', value: '' }],
+=======
+  options: defaultOptions(),
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
   answer: '',
   score: 10,
   knowledgePoint: '',
@@ -119,6 +152,7 @@ function getQuestionTypeTag(type) {
   return types[type] || 'info'
 }
 
+<<<<<<< HEAD
 async function handleCreate() {
   if (!await formRef.value.validate()) return
   
@@ -129,22 +163,103 @@ async function handleCreate() {
   if (res.code === 200) {
     showCreateDialog.value = false
     loadQuestions()
+=======
+function resetForm() {
+  editingId.value = null
+  form.examId = searchExamId.value || ''
+  form.type = 1
+  form.content = ''
+  form.options = defaultOptions()
+  form.answer = ''
+  form.score = 10
+  form.knowledgePoint = ''
+  form.analysis = ''
+  formRef.value?.resetFields()
+}
+
+function openCreateDialog() {
+  resetForm()
+  showCreateDialog.value = true
+}
+
+async function handleSubmit() {
+  if (!await formRef.value.validate()) return
+
+  const data = {
+    examId: form.examId,
+    type: form.type,
+    content: form.content,
+    options: form.type === 3 ? null : JSON.stringify(form.options),
+    answer: form.answer,
+    score: Number(form.score),
+    knowledgePoint: form.knowledgePoint,
+    analysis: form.analysis
+  }
+
+  try {
+    const res = editingId.value
+      ? await updateQuestion(editingId.value, data)
+      : await createQuestion(data)
+    if (res.code === 200) {
+      ElMessage.success(editingId.value ? '更新成功' : '创建成功')
+      showCreateDialog.value = false
+      loadQuestions()
+    } else {
+      ElMessage.error(res.message || '操作失败')
+    }
+  } catch {
+    ElMessage.error('操作失败，请稍后重试')
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
   }
 }
 
 function editQuestion(row) {
+<<<<<<< HEAD
   Object.assign(form, row)
   if (row.options) {
     form.options = JSON.parse(row.options)
+=======
+  editingId.value = row.id
+  form.examId = row.examId
+  form.type = row.type
+  form.content = row.content
+  form.answer = row.answer
+  form.score = row.score
+  form.knowledgePoint = row.knowledgePoint || ''
+  form.analysis = row.analysis || ''
+  if (row.type !== 3 && row.options) {
+    try {
+      form.options = JSON.parse(row.options)
+    } catch {
+      form.options = defaultOptions()
+    }
+  } else {
+    form.options = defaultOptions()
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
   }
   showCreateDialog.value = true
 }
 
 async function handleDeleteQuestion(row) {
+<<<<<<< HEAD
   if (confirm('确定删除该题目吗？')) {
     const res = await deleteQuestionApi(row.id)
     if (res.code === 200) {
       loadQuestions()
+=======
+  try {
+    await ElMessageBox.confirm('确定删除该题目吗？', '提示', { type: 'warning' })
+    const res = await deleteQuestionApi(row.id)
+    if (res.code === 200) {
+      ElMessage.success('删除成功')
+      loadQuestions()
+    } else {
+      ElMessage.error(res.message || '删除失败')
+    }
+  } catch (e) {
+    if (e !== 'cancel') {
+      ElMessage.error(e?.message || '删除失败，请稍后重试')
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
     }
   }
 }

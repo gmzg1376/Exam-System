@@ -4,10 +4,17 @@ server:
 
 spring:
   datasource:
+<<<<<<< HEAD
     url: jdbc:mysql://127.0.0.1:3306/exam_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
     password: Lm147187
     driver-class-name: com.mysql.jdbc.Driver
+=======
+    url: jdbc:mysql://127.0.0.1:3306/exam_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: Lm147187
+    driver-class-name: com.mysql.cj.jdbc.Driver
+>>>>>>> 0da6e3cd8bf9b64a37eefee18f8b298e24c273d1
   
   servlet:
     multipart:
